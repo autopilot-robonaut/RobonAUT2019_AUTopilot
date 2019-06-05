@@ -1,0 +1,10 @@
+v01_cubemx\vl53l0x_platform_log.o: ..\Src\VL53L0X_API\vl53l0x_platform_log.c
+v01_cubemx\vl53l0x_platform_log.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+v01_cubemx\vl53l0x_platform_log.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
+v01_cubemx\vl53l0x_platform_log.o: ..\Src\VL53L0X_API\vl53l0x_def.h
+v01_cubemx\vl53l0x_platform_log.o: ..\Src\VL53L0X_API\vl53l0x_device.h
+v01_cubemx\vl53l0x_platform_log.o: ..\Src\VL53L0X_API\vl53l0x_types.h
+v01_cubemx\vl53l0x_platform_log.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+v01_cubemx\vl53l0x_platform_log.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+v01_cubemx\vl53l0x_platform_log.o: ..\Src\VL53L0X_API\vl53l0x_platform_log.h
+v01_cubemx\vl53l0x_platform_log.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
