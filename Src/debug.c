@@ -139,7 +139,6 @@ void Start_Debug_Task(void const * argument)
 	//				UART2_message(debug_data, sprintf(debug_data, "\n"));				
 				
 					// Labirintus adatok
-					print_table();
 					// Egyéb üzenetek
 					UART2_message(debug_data, sprintf(debug_data, "CTBJ %d\n",cross_type_b_j));			
 					UART2_message(debug_data, sprintf(debug_data, "TDEB %d\n",time_elapsed_debug));
@@ -284,7 +283,6 @@ void Start_Debug_Task(void const * argument)
 			UART2_message(debug_data, sprintf(debug_data, "\n\r"));
 			
 			// DMA-val uart üzenet kiküldése
-			//print_table();
 			if(UART_COM) HAL_UART_Transmit_DMA(&huart2, (uint8_t*)debug_message,  msg_index);
 			else HAL_UART_Transmit_DMA(&huart5, (uint8_t*)debug_message,  msg_index);
 			xSemaphoreGive(xMutexUART);		

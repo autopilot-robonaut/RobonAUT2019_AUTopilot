@@ -77,29 +77,29 @@ extern BaseType_t xHigherPriorityTaskWokenDebugGet;
 extern SemaphoreHandle_t xMutexI2C;
 extern SemaphoreHandle_t xMutexUART;
 
-enum vonalallapot{
-	LASSU = 0,
-	GYORS = 1,
+enum section_state{
+	SLOW = 0,
+	FAST = 1,
 };
 
 enum keresztezodes{
-	ELORE = 0,
-	BALRA = 1,
-	JOBBRA = 2,
+	FWD = 0,
+	LEFT = 1,
+	RIGHT = 2,
 };
 
-enum versenyallapot{
-	UGYESSEGI = 0,
-	ATSOROLAS = 1,
-	ELOZES = 2,
+enum game_state{
+	LABYRINTH = 0,
+	LANE_CHANGE = 1,
+	OVERTAKING = 2,
 	SAFETYCAR = 3,
-	GYORSASAGI = 4,
+	SPEED_RACE = 4,
 };
 
-enum elozesallapot{
-	kirantas = 0,
-	egyenes_elozes = 1,
-	besorolas = 2,
+enum overtaking_state{
+	OT_START = 0,
+	OT_STRAIGHT = 1,
+	OT_BACK = 2,
 };
 
 //Saját globális változók
@@ -115,7 +115,7 @@ extern float SHARP_side_mm,SHARP_front_mm;
 
 // ADC Process változók
 extern float fo_vonal_hiba_SI,szog_hiba_SI,fo_vonal_hiba,masodik_vonal_hiba;
-extern enum vonalallapot akt_vonalallapot;
+extern enum section_state akt_vonalallapot;
 extern uint32_t time_elapsed_adc_process;
 extern uint32_t akt_vonalak_szama_elol;
 extern uint32_t adc_vago[96];
@@ -139,7 +139,7 @@ extern uint8_t current_szakasz;
 
 extern uint8_t ugyessegi_lassaban;
 extern float szagatott_atlag;
-extern enum elozesallapot elozes_allapot;
+extern enum overtaking_state elozes_allapot;
 extern float egyenes_elozes_kezdete;
 extern uint8_t atsoroltunk_mar,atsorolunk;
 
@@ -149,7 +149,7 @@ extern uint8_t vonalhiba_kulonbseg;
 
 extern uint32_t valtasokszama;
 
-//elozes
+//OVERTAKING
 extern float yaw_tmp;
 extern float elozes_posx,elozes_posy;
 
@@ -207,16 +207,12 @@ extern enum keresztezodes last_keresztezodes;
 extern uint8_t newcross,konwncross;
 extern int8_t cross_99;
 extern uint8_t current_cross;
-extern uint8_t ismeretlen_utak_szama;
+extern uint8_t num_of_unkonown_road;
 extern int32_t data_table[NODES_NUM][NODES_DATA_NUM];
-extern char debug_data[64];
 extern uint32_t min_dist;
 extern uint8_t next_dir_change;
-
 extern uint8_t cross_type_b_j;
-
 extern uint8_t gyorsasagival_kezdunk;
-
 extern uint8_t feny_allapota,star_valtozik,jirany_valtozik,fek_valtozik,birany_valtozik;
 
 

@@ -14,5 +14,5 @@ void atsorolas_adc_process(uint8_t max_vonalszam,uint8_t max_vonaltavolsag_szam)
 void safetycar_adc_process(uint8_t max_vonalszam,uint8_t max_vonaltavolsag_szam);
 void elozes_adc_process(uint8_t max_vonalszam,uint8_t max_vonaltavolsag_szam);
 
-uint8_t labirintus(uint8_t irany);
+uint8_t labirintus(uint8_t direction);
 float iaverage(float *iarray,uint32_t arraysize);

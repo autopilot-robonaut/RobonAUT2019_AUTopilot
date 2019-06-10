@@ -30,7 +30,7 @@ void Start_TOF_Task(void const * argument)
 //		time_old_TOF = get_timer_us();	
 //		
 //		/*
-//		 * Elore nézo Ultrahang távolsag adata 
+//		 * FWD nézo Ultrahang távolsag adata 
 //		 * BEGIN
 //		 */
 //		HAL_TIM_Base_Start_IT(&htim13);
@@ -38,7 +38,7 @@ void Start_TOF_Task(void const * argument)
 
 //		ulTaskNotifyTake( pdTRUE,60);
 //		/*
-//		 * Elore nézo Ultrahang távolsag adata 
+//		 * FWD nézo Ultrahang távolsag adata 
 //		 * END
 //		 */
 //		

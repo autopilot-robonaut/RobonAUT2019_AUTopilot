@@ -1,7 +1,7 @@
 #include "adc_process.h"
 
-#define KEZDO_GYORSASSAGI_ALLAPOT GYORS
-#define KEZDO_VERSENY_ALLAPOT UGYESSEGI
+#define KEZDO_GYORSASSAGI_ALLAPOT FAST
+#define KEZDO_VERSENY_ALLAPOT LABYRINTH
  
 #define MAX_VONAL_SZAM_GYORS 4
 #define VONAL_TAVOLSAG_SZENZOR_SZAM_GYORS 2
@@ -21,7 +21,6 @@
 
 
 
-enum versenyallapot game_state = KEZDO_VERSENY_ALLAPOT;
 
 uint32_t elso_ugyessegi_res[48],hatso_ugyessegi_res[48];
 uint32_t elso_ugyessegi_sum[48][ABLAK_MERET],hatso_ugyessegi_sum[48][ABLAK_MERET];
@@ -72,17 +71,17 @@ enum keresztezodes last_keresztezodes;
 uint8_t lehet_uj_keresztezodes = TRUE,vege_az_egyenesnek = FALSE,vege_a_szetvalasnak = FALSE,atsorolas_hatul_nullaztuk = FALSE;
 uint8_t keresztezodes_dontes_fajta;
 
-//Gyorsasagi
+//SPEED_RACE
 float utolso_szakasz_mm=0;
 float palya[SZAKASZOK_SZAMA][MAX_RESZEK_SZAMA_SZAKASZBAN][ADATOK_SZAMA]={{
-	{100000,4,-1,0}		,{-1,-1,-1,-1}			,{-1,-1,-1,-1}},   			// 1 GYORS SZAKASZ
-	{{100000,1.8,-1,100}	,{20000,1.7,-1,100}	,{-1,-1,-1,-1}},  		// 1 LASSU SZAKASZ
-	{{100000,4,-1,0}	,{-1,-1,-1,-1}			,{-1,-1,-1,-1}},  			// 2 GYORS SZAKASZ
-	{{100000,1.8,-1,100}	,{7000,1.7,-1,100}	,{20000,1.5,-1,100}},		// 2 LASSU SZAKASZ
-	{{100000,5,-1,0}	,{-1,-1,-1,-1}			,{-1,-1,-1,-1}},  			// 3 GYORS SZAKASZ
-	{{100000,1.8,-1,100}	,{20000,1.7,-1,100}	,{-1,-1,-1,-1}},			// 3 LASSU SZAKASZ
-	{{100000,3.5,-1,0}	,{-1,-1,-1,-1}			,{-1,-1,-1,-1}},   			// 4 GYORS SZAKASZ
-	{{100000,1.5,-1,100}	,{7000,1.7,-1,100}	,{20000,1.5,-1,100}}};	// 4 LASSU SZAKASZ
+	{100000,4,-1,0}		,{-1,-1,-1,-1}			,{-1,-1,-1,-1}},   			// 1 FAST SZAKASZ
+	{{100000,1.8,-1,100}	,{20000,1.7,-1,100}	,{-1,-1,-1,-1}},  		// 1 SLOW SZAKASZ
+	{{100000,4,-1,0}	,{-1,-1,-1,-1}			,{-1,-1,-1,-1}},  			// 2 FAST SZAKASZ
+	{{100000,1.8,-1,100}	,{7000,1.7,-1,100}	,{20000,1.5,-1,100}},		// 2 SLOW SZAKASZ
+	{{100000,5,-1,0}	,{-1,-1,-1,-1}			,{-1,-1,-1,-1}},  			// 3 FAST SZAKASZ
+	{{100000,1.8,-1,100}	,{20000,1.7,-1,100}	,{-1,-1,-1,-1}},			// 3 SLOW SZAKASZ
+	{{100000,3.5,-1,0}	,{-1,-1,-1,-1}			,{-1,-1,-1,-1}},   			// 4 FAST SZAKASZ
+	{{100000,1.5,-1,100}	,{7000,1.7,-1,100}	,{20000,1.5,-1,100}}};	// 4 SLOW SZAKASZ
 
 //		float palya[SZAKASZOK_SZAMA][MAX_RESZEK_SZAMA_SZAKASZBAN][ADATOK_SZAMA]={{{100000,10,-1,0},
 //		{-1,-1,-1,-1},{-1,-1,-1,-1}},{{500,10,-1,0},{20000,2.0,-1,100},{-1,-1,-1,-1}},
@@ -101,7 +100,7 @@ uint8_t cross_type_b_j=0;
 float enc_mm_before,enc_mm_now,enc_mm_between,elozo_vonal_valtas_mm;
 float last_j_b_cross=1000000;
 uint8_t last_j_b_dir=0;
-enum vonalallapot akt_vonalallapot = KEZDO_GYORSASSAGI_ALLAPOT;
+enum section_state akt_vonalallapot = KEZDO_GYORSASSAGI_ALLAPOT;
 
 uint8_t vonal_tipus_memoria[10];
 
@@ -118,11 +117,11 @@ float enc_ugyessegi_vege,enc_gyorsassagi_kezdete;
 float NO_LINE_SINCE_HATUL = 0;
 float atsorolasi_hiba_mm;
 
-//elozes
+//OVERTAKING
 float elozes_elotti_szog=PI;
 float elozes_posx=0;
 float elozes_posy=0;
-enum elozesallapot elozes_allapot = kirantas;
+enum overtaking_state elozes_allapot = OT_START;
 float egyenes_elozes_kezdete=0;
 float kirantas_szog_kulonbseg;
 uint8_t vonalhiba_kulonbseg=0;
@@ -154,11 +153,11 @@ void Start_Calculate_Task(void const * argument){
 	osDelay(3000);
 	if(gyorsasagival_kezdunk)
 	{
-		state_game=GYORSASAGI;
+		state_game=SPEED_RACE;
 		blink = 3;
 	}
 	xTaskNotify(Motor_TaskHandle,0,eNoAction);
-	//state_game = ATSOROLAS;
+	//state_game = LANE_CHANGE;
   /* Infinite loop */
 	if(state_game == SAFETYCAR)
 	{
@@ -176,15 +175,15 @@ void Start_Calculate_Task(void const * argument){
 		 */
 		switch(state_game)
 		{
-			case UGYESSEGI:
+			case LABYRINTH:
 				ugyessegi_adc_process(MAX_VONAL_SZAM_UGYES,VONAL_TAVOLSAG_SZENZOR_SZAM_UGYES);
 				break;
 			
-			case ATSOROLAS:
+			case LANE_CHANGE:
 				atsorolas_adc_process(MAX_VONAL_SZAM_UGYES,VONAL_TAVOLSAG_SZENZOR_SZAM_UGYES);
 				break;
 			
-			case ELOZES:			
+			case OVERTAKING:			
 				elozes_adc_process(MAX_VONAL_SZAM_GYORS,VONAL_TAVOLSAG_SZENZOR_SZAM_GYORS);
 				break;
 			
@@ -192,7 +191,7 @@ void Start_Calculate_Task(void const * argument){
 				safetycar_adc_process(MAX_VONAL_SZAM_GYORS,VONAL_TAVOLSAG_SZENZOR_SZAM_GYORS);
 				break;
 			
-			case GYORSASAGI:
+			case SPEED_RACE:
 				gyorsassagi_adc_process(MAX_VONAL_SZAM_GYORS,VONAL_TAVOLSAG_SZENZOR_SZAM_GYORS);				
 				break;
 				
@@ -540,11 +539,11 @@ void safetycar_adc_process(uint8_t max_vonalszam,uint8_t max_vonaltavolsag_szam)
 			
 			switch(akt_vonalallapot)
 			{
-				case LASSU:
-					akt_vonalallapot = GYORS;
+				case SLOW:
+					akt_vonalallapot = FAST;
 					break;
-				case GYORS:
-					akt_vonalallapot = LASSU;
+				case FAST:
+					akt_vonalallapot = SLOW;
 				  BRAKE_GYORS_LASSU = 1;
 
 					break;
@@ -650,7 +649,7 @@ void safetycar_adc_process(uint8_t max_vonalszam,uint8_t max_vonaltavolsag_szam)
 		if(current_szakasz_safty>7 && SHARP_front_mm>600)
 		{
 			valtasokszama=0;
-			state_game=GYORSASAGI;
+			state_game=SPEED_RACE;
 			first_run_motor = TRUE;
 		}
 		if(ELOZUNK_SAFTY && current_szakasz_safty == 4  && safety_elozes_elott_mm ==0 )
@@ -660,7 +659,7 @@ void safetycar_adc_process(uint8_t max_vonalszam,uint8_t max_vonaltavolsag_szam)
 		if(ELOZUNK_SAFTY && current_szakasz_safty == 4 && fabs(fo_vonal_hiba)<3 && fabs(szog_hiba_SI)<0.05 && (enc_mm_now - safety_elozes_elott_mm) < 3000 && (enc_mm_now - safety_elozes_elott_mm) > 1000)
 		{
 			elozes_elotti_szog=yaw;
-			state_game=ELOZES;
+			state_game=OVERTAKING;
 			elozes_posx=0;
 			elozes_posy=0;
 			birany_valtozik = TRUE;
@@ -854,7 +853,7 @@ void ugyessegi_adc_process(uint8_t max_vonalszam,uint8_t max_vonaltavolsag_szam)
 				
 				if( cross_type_e>170 && vege_az_egyenesnek && cross_type_b_j==0) //170
 				{
-					last_keresztezodes = ELORE;
+					last_keresztezodes = FWD;
 					vege_az_egyenesnek = FALSE;
 					lehet_uj_keresztezodes = FALSE;
 					iranyfeny_vilagithat = TRUE;
@@ -871,7 +870,7 @@ void ugyessegi_adc_process(uint8_t max_vonalszam,uint8_t max_vonaltavolsag_szam)
 					
 					
 					
-					// Elore helyzetbol jövünk és döntöttünk már, hogy merre megyünk
+					// FWD helyzetbol jövünk és döntöttünk már, hogy merre megyünk
 					if(next_dir_cross==1) // 
 					{
 						if(vonal_hibak[0]<vonal_hibak[1]) fo_vonal_hiba=vonal_hibak[0];
@@ -937,12 +936,12 @@ void ugyessegi_adc_process(uint8_t max_vonalszam,uint8_t max_vonaltavolsag_szam)
 				next_dir_cross=labirintus(last_j_b_dir);
 				if(last_j_b_dir==2)
 				{					
-						last_keresztezodes = BALRA;
+						last_keresztezodes = LEFT;
 						balra_count++;		
 				}
 				else 
 				{					
-						last_keresztezodes = JOBBRA;
+						last_keresztezodes = RIGHT;
 						jobbra_count++;	
 				}
 			}
@@ -955,13 +954,13 @@ void ugyessegi_adc_process(uint8_t max_vonalszam,uint8_t max_vonaltavolsag_szam)
 				else yaw_tmp=yaw+2*PI;
 				if(szog_keresztezodes_elott-yaw_tmp>0)
 				{
-					last_keresztezodes = JOBBRA;
+					last_keresztezodes = RIGHT;
 					jobbra_count++;	
 					next_dir_cross=labirintus(1);
 				}
 				else
 				{
-					last_keresztezodes = BALRA;
+					last_keresztezodes = LEFT;
 					balra_count++;		
 					next_dir_cross=labirintus(2);
 				}
@@ -1062,11 +1061,11 @@ void ugyessegi_adc_process(uint8_t max_vonalszam,uint8_t max_vonaltavolsag_szam)
 		if(ELSO_VONALAK_SZAMA_MEM !=0 && VONALAK_SZAMA != 0) szog_hiba_SI = ((fo_vonal_hiba - hatso_fo_vonal_hiba)*TCRT5000_tavolsag)/SZENZORSOR_tavolsag;
 		
 		cross_99=path_99();
-		if(( (data_table[current_cross][11]==99 && last_keresztezodes!=ELORE) || 
-			(cross_99==-1 &&last_keresztezodes ==ELORE && (data_table[current_cross][11]==1 ||data_table[current_cross][11]==2))) 
-			&& ismeretlen_utak_szama == 0 &&ONE_LINE_SINCE>200 && HATSO_VONAL_SINCE > 10)
+		if(( (data_table[current_cross][11]==99 && last_keresztezodes!=FWD) || 
+			(cross_99==-1 &&last_keresztezodes ==FWD && (data_table[current_cross][11]==1 ||data_table[current_cross][11]==2))) 
+			&& num_of_unkonown_road == 0 &&ONE_LINE_SINCE>200 && HATSO_VONAL_SINCE > 10)
 		{
-			state_game = ATSOROLAS;
+			state_game = LANE_CHANGE;
 			jirany_valtozik = TRUE;
 			HATSO_VONAL_SINCE = 0;
 			cross_type_e = 0;
@@ -1303,13 +1302,13 @@ void elozes_adc_process(uint8_t max_vonalszam,uint8_t max_vonaltavolsag_szam) {
 		else yaw_tmp=yaw+2*PI;
 		
 
-		if(elozes_allapot == kirantas && fabs(elozes_posy)>500)
+		if(elozes_allapot == OT_START && fabs(elozes_posy)>500)
 		{
 			//egyenes_elozes_kezdete = enc_mm_now;
-			elozes_allapot = egyenes_elozes;
+			elozes_allapot = OT_STRAIGHT;
 		}
 
-		if(elozes_allapot == egyenes_elozes || elozes_allapot == kirantas)
+		if(elozes_allapot == OT_STRAIGHT || elozes_allapot == OT_START)
 		{
 			fo_vonal_hiba_SI = (elozes_posy + 800.0f)*0.001f;
 		}
@@ -1320,9 +1319,9 @@ void elozes_adc_process(uint8_t max_vonalszam,uint8_t max_vonaltavolsag_szam) {
 		}
 		szog_hiba_SI = yaw_tmp -elozes_elotti_szog;
 		
-		if(elozes_posx>4500 && elozes_allapot == egyenes_elozes)
+		if(elozes_posx>4500 && elozes_allapot == OT_STRAIGHT)
 		{
-			elozes_allapot = besorolas;
+			elozes_allapot = OT_BACK;
 			//accumulated_speed_error = 0;
 			ONE_LINE_SINCE = 0;
 			TWO_LINE_SINCE = 0;
@@ -1330,7 +1329,7 @@ void elozes_adc_process(uint8_t max_vonalszam,uint8_t max_vonaltavolsag_szam) {
 			FOUR_LINE_SINCE = 0;
 			HATSO_VONAL_SINCE=0;
 		}	
-		if(fabs(elozes_posy)<5  && elozes_allapot == besorolas)
+		if(fabs(elozes_posy)<5  && elozes_allapot == OT_BACK)
 		{
 			ONE_LINE_SINCE=1250;
 			state_game = SAFETYCAR;	
@@ -1434,15 +1433,14 @@ void elozes_adc_process(uint8_t max_vonalszam,uint8_t max_vonaltavolsag_szam) {
 		
 		hatso_fo_vonal_hiba_mem = hatso_fo_vonal_hiba;
 }
-uint8_t labirintus(uint8_t irany){	
-	uint8_t dir=data_process(irany,pos_x, pos_y, enc_mm_now-last_cross_encoder, szaggatott);
+uint8_t labirintus(uint8_t direction){	
+	uint8_t dir=data_process(direction,pos_x, pos_y, enc_mm_now-last_cross_encoder, szaggatott);
 	last_cross_encoder=enc_mm_now;
 	//last_cross_time=time_old_adc_process;
 	//Ha valamelyik infot tovabb tudjuk terjeszteni, akkor megcsináljuk
 	uint8_t flow=1;
 	while(flow) flow=follow_the_flow();
 	szaggatott=-1;	
-	print_table();
 	return dir;
 }
 

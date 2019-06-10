@@ -39,7 +39,7 @@ char RI_receive_message[5];
 uint8_t RI_started = FALSE;
 uint8_t first_run_motor=TRUE;
 
-//gyorsasagi
+//SPEED_RACE
 uint32_t enc_mm_now_motor;
 uint32_t elozo_resz_valtas=0;
 
@@ -71,9 +71,9 @@ void Start_Motor_Task(void const * argument)
 			osDelay(10);
 			HAL_UART_Receive_IT(&huart1,(uint8_t*)RI_receive_message,1);
 			ulTaskNotifyTake( pdTRUE,portMAX_DELAY);
-		}while(RI_receive_message[0] != 0x30U && state_game != SAFETYCAR && state_game != GYORSASAGI  );
+		}while(RI_receive_message[0] != 0x30U && state_game != SAFETYCAR && state_game != SPEED_RACE  );
 		
-		if(state_game == GYORSASAGI)
+		if(state_game == SPEED_RACE)
 		{
 			osDelay(2000);
 		}
@@ -99,7 +99,7 @@ void Start_Motor_Task(void const * argument)
 
 		switch(state_game)
 		{
-			case UGYESSEGI:
+			case LABYRINTH:
 				MOTOR_P=40;
 				MOTOR_I=120;
 				if(ugyessegi_lassaban)
@@ -132,7 +132,7 @@ void Start_Motor_Task(void const * argument)
 				}
 				break;
 			
-			case ATSOROLAS:
+			case LANE_CHANGE:
 				MOTOR_P=40;
 				MOTOR_I=120;
 				if(atsoroltunk_mar || atsorolunk)	desired_speed = 0.8f;
@@ -141,20 +141,20 @@ void Start_Motor_Task(void const * argument)
 				
 				break;
 			
-			case ELOZES:
+			case OVERTAKING:
 				MOTOR_P=40;
 				MOTOR_I=120;
 				Motor_Brake = 0;
-				switch(egyenes_elozes)
+				switch(OT_STRAIGHT)
 				{
-					case kirantas:
+					case OT_START:
 						desired_speed = 1.3f;
 						break;
-					case egyenes_elozes:
+					case OT_STRAIGHT:
 						if(szog_hiba_SI<0.1f)	desired_speed = 3.5f;
 						else desired_speed = 1.5f;
 						break;
-					case besorolas:
+					case OT_BACK:
 						desired_speed = 1.5f;
 						break;
 				}					
@@ -176,21 +176,21 @@ void Start_Motor_Task(void const * argument)
 				
 
 				desired_speed = safety_P*distance_error + accumulated_distance_error;
-				if(desired_speed > 1.7f && akt_vonalallapot == GYORS) desired_speed = 1.7f;
-				if(desired_speed > 1.05f && akt_vonalallapot == LASSU) desired_speed = 1.05f;
-				if(elozes_allapot == besorolas)
+				if(desired_speed > 1.7f && akt_vonalallapot == FAST) desired_speed = 1.7f;
+				if(desired_speed > 1.05f && akt_vonalallapot == SLOW) desired_speed = 1.05f;
+				if(elozes_allapot == OT_BACK)
 				{
 					switch(akt_vonalallapot)
 					{
-						case LASSU:
+						case SLOW:
 							desired_speed = 1.2f;
 							break;
-						case GYORS:
+						case FAST:
 							desired_speed = 1.6f;
 							break;
 					}
 				}
-				if(elozes_allapot != besorolas && SHARP_front_mm < 300)
+				if(elozes_allapot != OT_BACK && SHARP_front_mm < 300)
 				{
 					if(accumulated_distance_error  < 0)
 					{
@@ -223,7 +223,7 @@ void Start_Motor_Task(void const * argument)
 				
 				break;
 			
-			case GYORSASAGI:	
+			case SPEED_RACE:	
 				MOTOR_P=20;
 				MOTOR_I=60;		
 				if(first_run_motor){				
@@ -241,30 +241,30 @@ void Start_Motor_Task(void const * argument)
 					accumulated_speed_error = 50;
 				}
 				
-				// Elso Gyorsítás(4 Lassu szakaszon)
+				// Elso FASTítás(4 SLOW szakaszon)
 				if(valtasokszama == 7)
 				{
-					palya[0][0][1]=4.5; // 1 Gyors
-					palya[1][0][1]=2; // 2 Lassu
-					palya[2][0][1]=6.0; // 2 Gyors
-					palya[3][0][1]=2; // 2 Lassu
-					palya[4][0][1]=5.0;		// 3 Gyors
-					palya[5][0][1]=1.8; // 3 Lassu
-					palya[6][0][1]=3.5; // 4 Gyors
-					palya[7][0][1]=1.8; // 4 Lassu
+					palya[0][0][1]=4.5; // 1 FAST
+					palya[1][0][1]=2; // 2 SLOW
+					palya[2][0][1]=6.0; // 2 FAST
+					palya[3][0][1]=2; // 2 SLOW
+					palya[4][0][1]=5.0;		// 3 FAST
+					palya[5][0][1]=1.8; // 3 SLOW
+					palya[6][0][1]=3.5; // 4 FAST
+					palya[7][0][1]=1.8; // 4 SLOW
 				}
 				
-				// Második GYorsítás(4 Lassu szakaszon)
+				// Második FASTítás(4 SLOW szakaszon)
 				if(valtasokszama == 15)
 				{
-					palya[0][0][1]=5.5; 	// 1 Gyors
-					palya[1][0][1]=2; // 2 Lassu
-					palya[2][0][1]=6.5;  // 2 Gyors
-					palya[3][0][1]=2; // 2 Lassu
-					palya[4][0][1]=5.5;  // 3 Gyors
-					palya[5][0][1]=1.8; // 3 Lassu
-					palya[6][0][1]=3.8;  // 4 Gyors
-					palya[7][0][1]=1.8; // 4 Lassu
+					palya[0][0][1]=5.5; 	// 1 FAST
+					palya[1][0][1]=2; // 2 SLOW
+					palya[2][0][1]=6.5;  // 2 FAST
+					palya[3][0][1]=2; // 2 SLOW
+					palya[4][0][1]=5.5;  // 3 FAST
+					palya[5][0][1]=1.8; // 3 SLOW
+					palya[6][0][1]=3.8;  // 4 FAST
+					palya[7][0][1]=1.8; // 4 SLOW
 				}
 				
 				if( (enc_mm_now_motor-elozo_resz_valtas) > palya[current_szakasz][reszek_szama_ind][0])

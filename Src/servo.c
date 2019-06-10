@@ -30,34 +30,34 @@ void Start_Servo_Task(void const * argument)
 		
 		switch(state_game)
 		{
-			case UGYESSEGI:
+			case LABYRINTH:
 				dbeallas=0.5f*speed+0.375f;
 				if(dbeallas < 0.9f) dbeallas = 0.9f;
 				else if(dbeallas > 2.0f) dbeallas = 2.0f;
 				allapotszabalyozo();
 				break;
 			
-			case ATSOROLAS:
+			case LANE_CHANGE:
 				dbeallas=0.375f*speed+0.375f;
 				if(dbeallas < 0.9f) dbeallas = 0.9f;
 				else if(dbeallas > 2.0f) dbeallas = 2.0f;
 				allapotszabalyozo();
 				break;
 			
-			case ELOZES:
-				switch(egyenes_elozes)
+			case OVERTAKING:
+				switch(OT_STRAIGHT)
 				{
-					case kirantas:
+					case OT_START:
 						dbeallas=0.2f*speed+0.2f;
 						if(dbeallas < 0.4f) dbeallas = 0.4f;
 						else if(dbeallas > 3.0f) dbeallas = 3.0f;
 						break;
-					case egyenes_elozes:
+					case OT_STRAIGHT:
 						dbeallas=0.5f*speed+1.5f;
 						if(dbeallas < 1.5f) dbeallas = 1.5f;
 						else if(dbeallas > 3.0f) dbeallas = 3.0f;
 						break;
-					case besorolas:
+					case OT_BACK:
 						dbeallas=0.5f*speed+1.5f;
 						if(dbeallas < 1.5f) dbeallas = 1.5f;
 						else if(dbeallas > 3.0f) dbeallas = 3.0f;
@@ -76,7 +76,7 @@ void Start_Servo_Task(void const * argument)
 				allapotszabalyozo();
 				break;
 			
-			case GYORSASAGI:
+			case SPEED_RACE:
 				dbeallas=dbeallasm*speed+dbeallaso;
 				if(dbeallas < 0.9f) dbeallas = 0.9f;
 				else if(dbeallas > 1.5f) dbeallas = 1.5f; // 2 volt
