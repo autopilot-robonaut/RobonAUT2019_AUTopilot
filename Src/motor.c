@@ -1,39 +1,44 @@
 #include "motor.h"
 
-#define RADIOS_INDITAS TRUE
-#define ENGEDELYEZES FALSE
+#define START_SIGNAL TRUE
+#define MOTOR_ENABLE FALSE
 
-// 0 ha automatában megy, és bármi más érték esetén RC távirányítóval mükszik
-#define MANUAL_MOTOR 0
-// 0 ha nem akarunk motor parancsot kiadni, és bármi más érték esetén normális mukodés
-#define SWITCH_OFF_MOTOR 0
+#define MANUAL_MOTOR FALSE // False if it goes autonomous, True if RC controller is used
+#define SWITCH_OFF_MOTOR FALSE
 
-#define MAX_VALTASOK_SZAMA 25
+// Maximum fast/slow section changes
+#define MAX_CHANGES 25
 
+// Motor PWM limits
 #define MAX_MOTOR_PWM 2100
 #define MIN_MOTOR_PWM 900
-
-#define MAX_I_ERROR 500.0f
-
 #define MOTOR_PWM_MID 1500
 #define MOTOR_PWM_FWD 1570
 
-#define SAFETY_KOVETES_tav	800			//mm-ben
-#define SAFETY_KOVETES_P 		0.001f
+// Motor PID controller max I term value
+#define MAX_I_ERROR 500.0f
 
-uint16_t motor_pwm;
-float MOTOR_P = 0,MOTOR_I = 0;
-float MOTOR_P_flash = 0,MOTOR_I_flash = 0;//80,2 volt flash elott
+// Safety car follow distance and P term
+#define SAFETY_FLW_DIST	800			//mm
+#define SAFETY_FLW_P 		0.001f
+
+uint16_t motor_pwm; // Motor PWM value
+// Motor PID variables and constants
+float MOTOR_P = 40,MOTOR_I = 120;
 float speed_error,desired_speed = 0.0f,actual_speed,accumulated_speed_error,accumulated_distance_error,distance_error;
 uint32_t MOTOR_I_old_time,MOTOR_I_new_time;
 float MOTOR_I_dt_s;
 float MOTOR_P_ERROR,MOTOR_I_ERROR;
+
 uint8_t Motor_Brake = 0,BRAKE_GYORS_LASSU = 0;
 uint8_t max_speed = 0;
 
-uint16_t safety_kovetesi_tavolsag = SAFETY_KOVETES_tav;
+// Safety car following variables
+uint16_t safety_kovetesi_tavolsag = SAFETY_FLW_DIST;
 float safety_P,safety_I;
+float safety_tavolsag_mm;
 
+// Radio module message
 char RI_receive_message[5];
 
 uint8_t RI_started = FALSE;
@@ -42,9 +47,6 @@ uint8_t first_run_motor=TRUE;
 //SPEED_RACE
 uint32_t enc_mm_now_motor;
 uint32_t elozo_resz_valtas=0;
-
-//Safety car
-float safety_tavolsag_mm;
 
 uint32_t state_speed_array[8][5][4] = { 
                      { {20000,5,1,0}, {0, 0,0,0}, {0, 0,0,0}, {0, 0,0,0}, {0, 0,0,0} },
@@ -64,17 +66,14 @@ void Start_Motor_Task(void const * argument)
 	/*
 	 * WAIT FOR RADIO START
 	 */
-	//ulTaskNotifyTake( pdTRUE,3000);
-	if(RADIOS_INDITAS == TRUE )
-	{
+	if(START_SIGNAL == TRUE ){
 		do{
 			osDelay(10);
 			HAL_UART_Receive_IT(&huart1,(uint8_t*)RI_receive_message,1);
 			ulTaskNotifyTake( pdTRUE,portMAX_DELAY);
 		}while(RI_receive_message[0] != 0x30U && state_game != SAFETYCAR && state_game != SPEED_RACE  );
 		
-		if(state_game == SPEED_RACE)
-		{
+		if(state_game == SPEED_RACE){
 			osDelay(2000);
 		}
 	}
@@ -88,20 +87,18 @@ void Start_Motor_Task(void const * argument)
   /* USER CODE BEGIN Start_Motor_Task */
   /* Infinite loop */
 	MOTOR_I_old_time = get_timer_us();
-  for(;;)
-  {
+	for(;;)
+	{
 			
 		enc_mm_now_motor = enc_mm_value_get();
 		
 		MOTOR_I_new_time = get_timer_us();
-		MOTOR_I_dt_s = (MOTOR_I_new_time - MOTOR_I_old_time)* 0.000001f; // Másodpercben az idokulonbseg
+		MOTOR_I_dt_s = (MOTOR_I_new_time - MOTOR_I_old_time)* 0.000001f; // Seconds
 		MOTOR_I_old_time = MOTOR_I_new_time;
 
 		switch(state_game)
 		{
 			case LABYRINTH:
-				MOTOR_P=40;
-				MOTOR_I=120;
 				if(ugyessegi_lassaban)
 				{
 					desired_speed = 0.90f;
@@ -133,8 +130,6 @@ void Start_Motor_Task(void const * argument)
 				break;
 			
 			case LANE_CHANGE:
-				MOTOR_P=40;
-				MOTOR_I=120;
 				if(atsoroltunk_mar || atsorolunk)	desired_speed = 0.8f;
 				else desired_speed = 1.5f;
 				first_run_motor=TRUE;
@@ -142,8 +137,6 @@ void Start_Motor_Task(void const * argument)
 				break;
 			
 			case OVERTAKING:
-				MOTOR_P=40;
-				MOTOR_I=120;
 				Motor_Brake = 0;
 				switch(OT_STRAIGHT)
 				{
@@ -162,8 +155,6 @@ void Start_Motor_Task(void const * argument)
 				break;
 			
 			case SAFETYCAR:
-				MOTOR_P=40;
-				MOTOR_I=120;
 				safety_P=0.004f;
 				safety_I = 0.00080f;
 				safety_tavolsag_mm=SHARP_front_mm;
@@ -223,9 +214,7 @@ void Start_Motor_Task(void const * argument)
 				
 				break;
 			
-			case SPEED_RACE:	
-				MOTOR_P=20;
-				MOTOR_I=60;		
+			case SPEED_RACE:		
 				if(first_run_motor){				
 					first_run_motor=FALSE;
 					desired_speed=palya[current_szakasz][reszek_szama_ind][1];
@@ -322,7 +311,7 @@ void Start_Motor_Task(void const * argument)
 		/*
 		 * RC távirányító engedélyezés, végso kódból kivenni a versenyen !!!
 		*/
-		if(ENGEDELYEZES)
+		if(MOTOR_ENABLE)
 		{
 			if(PWMINValue < 1550 && PWMINValue > 1450) {
 				motor_pwm = MIN_MOTOR_PWM; 
@@ -340,7 +329,7 @@ void Start_Motor_Task(void const * argument)
 		
 
 		
-		if(valtasokszama >= MAX_VALTASOK_SZAMA) 
+		if(valtasokszama >= MAX_CHANGES) 
 		{
 			motor_pwm = MIN_MOTOR_PWM;
 			star_valtozik = TRUE;
