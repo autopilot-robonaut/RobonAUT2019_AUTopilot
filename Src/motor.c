@@ -25,6 +25,7 @@
 uint16_t motor_pwm; // Motor PWM value
 // Motor PID variables and constants
 float MOTOR_P = 40,MOTOR_I = 120;
+float MOTOR_P_flash = 40,MOTOR_I_flash = 120;
 float speed_error,desired_speed = 0.0f,actual_speed,accumulated_speed_error,accumulated_distance_error,distance_error;
 uint32_t MOTOR_I_old_time,MOTOR_I_new_time;
 float MOTOR_I_dt_s;

@@ -125,28 +125,22 @@ extern uint8_t state_game;
 extern uint32_t elso_szenzor_sor_process[48],hatso_szenzor_sor_process[48];
 extern float TWO_LINE_SINCE,ONE_LINE_SINCE;
 extern int8_t next_dir_cross;
-
 extern uint32_t cross_type_b,cross_type_j,cross_type_s,balra_count,jobbra_count,elore_count;
 extern float szagatott_type;
 extern float cross_type_e;
 extern int8_t szaggatott;
-
 extern float utolso_szakasz_mm;
 extern float palya[SZAKASZOK_SZAMA][MAX_RESZEK_SZAMA_SZAKASZBAN][ADATOK_SZAMA];
 extern uint8_t reszek_szama_ind;
 extern int32_t szakaszok[SZAKASZOK_SZAMA];
 extern uint8_t current_szakasz;
-
 extern uint8_t ugyessegi_lassaban;
 extern float szagatott_atlag;
 extern enum overtaking_state elozes_allapot;
 extern float egyenes_elozes_kezdete;
 extern uint8_t atsoroltunk_mar,atsorolunk;
-
 extern uint8_t keresztezodes_dontes_fajta;
-
 extern uint8_t vonalhiba_kulonbseg;
-
 extern uint32_t valtasokszama;
 
 //OVERTAKING
