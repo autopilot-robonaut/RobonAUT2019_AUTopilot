@@ -22,7 +22,7 @@ The autonomous car's base is a HPI MAVERICK STRADA XT.
 The code is written in C language. The project is based on FreeRTOS and consists of several tasks.
 
 Tasks:
-* Multichannel ADC reading (DMA)
+* Multichannel ADC reading with DMA
 * Line following with state space controller
 * Motor speed with PID controller
 * Labyrinth solving algorithm (Dijkstra's algorithm, Graph-based)
