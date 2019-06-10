@@ -14,9 +14,6 @@ uint8_t ismeretlen_utak_szama=0;
 uint8_t next_dir;
 uint32_t min_dist=99999999;
 uint8_t cross_count=0;
-//Test
-int32_t test_data[34][5]={{2,100,0,100,-1},{1,300,1000,3000,-1},{0,100,1000,200,-1},{1,-500,1000,600,-1},{0,-700,1000,200,-1},{2,-400,1500,1500,-1},{2,-500,1000,700,-1},{0,-700,1000,200,-1},{0,-700,0,2800,-1},{1,-500,0,1500,-1},{2,-700,0,200,-1},{2,-700,1000,2800,-1},{0,-500,1000,200,-1},{0,-400,1500,500,-1},{2,300,1000,3000,3},{0,100,1000,200,-1},{1,100,0,1500,-1},{1,300,1000,3000,-1},{0,100,1000,200,-1},{1,-500,1000,600,-1},{0,-700,1000,200,-1},{0,-700,0,2800,-1},{0,-500,0,200,-1},{2,100,0,600,-1},{1,300,1000,3000,-1},{0,100,1000,200,-1},{1,-500,1000,600,-1},{0,-700,1000,200,-1},{0,-700,0,2800,-1},{1,-500,0,1500,-1},{2,-700,0,200,-1},{2,-700,1000,2800,-1},{0,-500,1000,200,-1},{0,-400,1500,500,-1}};
-uint8_t test_ind=0;
 int8_t cross_99 = -1;
 	
 char debug_data2[64];
@@ -533,80 +530,4 @@ void corr_x_y(uint8_t curr_cross, int32_t x,int32_t y)
 	}
 	
 }
-/*void Start_Labirintus_Task(void const * argument)
-{
-	for(;;)
-	{		
-		// várunk az új keresztezodésre, eddig gomb volt
-		// és az adatokat egy test adatbázisbol kaptuk
-		//ulTaskNotifyTake( pdTRUE,portMAX_DELAY);
-		
-		//megkapjuk az adatokat
-		next_dir=data_process(test_data[test_ind][0],test_data[test_ind][1],test_data[test_ind][2],test_data[test_ind][3],test_data[test_ind][4]);
-		UART2_message(debug_data, sprintf(debug_data, "%d : Dir: %d X: %d Y: %d Enc: %d atsorolas: %d  \r",test_ind,test_data[test_ind][0],test_data[test_ind][1],test_data[test_ind][2],test_data[test_ind][3],test_data[test_ind][4]));	
-		HAL_UART_Transmit(&huart2, (uint8_t*)debug_message,  msg_index,portMAX_DELAY);
-		
-		//Ha valamelyik infot tovabb tudjuk terjeszteni, akkor megcsináljuk
-		flow=1;
-		while(flow) flow=follow_the_flow();	
-		
-		// kiprintelni dolgokat debug céljából
-		msg_index=0;
-		print_table();
-		ismeretlen_utak();
-		msg_index=0;
-		UART2_message(debug_data, sprintf(debug_data, "Ismeretlen utak: %d  \n",ismeretlen_utak_szama));			
-		UART2_message("\r",1);	
-		HAL_UART_Transmit(&huart2, (uint8_t*)debug_message,  msg_index,portMAX_DELAY);
-		msg_index=0;
-		print_next_dir(next_dir);
-		msg_index=0;
-		test_ind++;
-		if(test_ind==34)
-		{
-			while(1) osDelay(1000);
-		}
-		osDelay(20);
-	}	
-}*/
-
-/*
-void print_table_dec()
-{
-	for(uint8_t i=0;i<8;i++)
-	{
-		for(uint8_t j=0;j<8;j++)
-		{			
-				UART2_message(debug_data, sprintf(debug_data, "%d \t", G[i][j]));			
-		}
-		UART2_message("\r",1);
-		
-	}
-	HAL_UART_Transmit(&huart2, (uint8_t*)debug_message,  msg_index,portMAX_DELAY);
-	
-}
-
-
-
-void print_next_dir(uint8_t dir)
-{
-		
-	msg_index=0;
-	if(dir==0)
-	{
-		UART2_message(debug_data, sprintf(debug_data, "%d Just GO \r", last_cross[1]));			
-	}
-	else if(dir==1)
-	{
-		UART2_message(debug_data, sprintf(debug_data, "%d Turn Right \r", last_cross[1]));		
-	}
-	else
-	{
-		UART2_message(debug_data, sprintf(debug_data, "%d Turn Left \r", last_cross[1]));		
-	}	
-	
-	UART2_message("\r",1);
-	HAL_UART_Transmit(&huart2, (uint8_t*)debug_message,  msg_index,portMAX_DELAY);
-}
-*/
 

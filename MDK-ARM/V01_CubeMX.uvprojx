@@ -184,7 +184,6 @@
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
             <RvdsVP>2</RvdsVP>
-            <RvdsMve>0</RvdsMve>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -400,12 +399,12 @@
             <File>
               <FileName>timer.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Src\timer.h</FilePath>
+              <FilePath>..\Inc\timer.h</FilePath>
             </File>
             <File>
               <FileName>robonaut_config.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Src\robonaut_config.h</FilePath>
+              <FilePath>..\Inc\robonaut_config.h</FilePath>
             </File>
             <File>
               <FileName>debug.c</FileName>
@@ -415,7 +414,7 @@
             <File>
               <FileName>debug.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Src\debug.h</FilePath>
+              <FilePath>..\Inc\debug.h</FilePath>
             </File>
             <File>
               <FileName>motor.c</FileName>
@@ -425,7 +424,7 @@
             <File>
               <FileName>motor.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Src\motor.h</FilePath>
+              <FilePath>..\Inc\motor.h</FilePath>
             </File>
             <File>
               <FileName>adc.c</FileName>
@@ -435,7 +434,7 @@
             <File>
               <FileName>adc.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Src\adc.h</FilePath>
+              <FilePath>..\Inc\adc.h</FilePath>
             </File>
             <File>
               <FileName>adc_process.c</FileName>
@@ -445,7 +444,7 @@
             <File>
               <FileName>adc_process.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Src\adc_process.h</FilePath>
+              <FilePath>..\Inc\adc_process.h</FilePath>
             </File>
             <File>
               <FileName>pwm_in.c</FileName>
@@ -455,7 +454,7 @@
             <File>
               <FileName>pwm_in.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Src\pwm_in.h</FilePath>
+              <FilePath>..\Inc\pwm_in.h</FilePath>
             </File>
             <File>
               <FileName>servo.c</FileName>
@@ -465,7 +464,7 @@
             <File>
               <FileName>servo.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Src\servo.h</FilePath>
+              <FilePath>..\Inc\servo.h</FilePath>
             </File>
             <File>
               <FileName>encoder.c</FileName>
@@ -475,7 +474,7 @@
             <File>
               <FileName>encoder.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Src\encoder.h</FilePath>
+              <FilePath>..\Inc\encoder.h</FilePath>
             </File>
             <File>
               <FileName>inertial.c</FileName>
@@ -485,7 +484,7 @@
             <File>
               <FileName>inertial.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Src\inertial.h</FilePath>
+              <FilePath>..\Inc\inertial.h</FilePath>
             </File>
             <File>
               <FileName>TOF.c</FileName>
@@ -495,7 +494,7 @@
             <File>
               <FileName>TOF.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Src\TOF.h</FilePath>
+              <FilePath>..\Inc\TOF.h</FilePath>
             </File>
             <File>
               <FileName>labirintus.c</FileName>
@@ -505,7 +504,7 @@
             <File>
               <FileName>labirintus.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Src\labirintus.h</FilePath>
+              <FilePath>..\Inc\labirintus.h</FilePath>
             </File>
             <File>
               <FileName>bno055.c</FileName>
@@ -515,7 +514,7 @@
             <File>
               <FileName>bno055.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Src\bno055.h</FilePath>
+              <FilePath>..\Inc\bno055.h</FilePath>
             </File>
             <File>
               <FileName>main.c</FileName>

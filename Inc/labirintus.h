@@ -21,7 +21,3 @@ void UART2_message2(char *debug_data,int32_t size);
 void print_dist(void);
 void path_100(void);
 
-//void Start_Labirintus_Task(void const * argument);
-//void print_table_dec();
-//void print_next_dir(uint8_t dir);
-

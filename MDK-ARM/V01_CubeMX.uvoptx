@@ -215,7 +215,6 @@
       <pMultCmdsp></pMultCmdsp>
       <DebugDescription>
         <Enable>1</Enable>
-        <EnableFlashSeq>0</EnableFlashSeq>
         <EnableLog>0</EnableLog>
         <Protocol>2</Protocol>
         <DbgClock>10000000</DbgClock>
@@ -268,7 +267,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Src\timer.h</PathWithFileName>
+      <PathWithFileName>..\Inc\timer.h</PathWithFileName>
       <FilenameWithoutPath>timer.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -280,7 +279,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Src\robonaut_config.h</PathWithFileName>
+      <PathWithFileName>..\Inc\robonaut_config.h</PathWithFileName>
       <FilenameWithoutPath>robonaut_config.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -304,7 +303,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Src\debug.h</PathWithFileName>
+      <PathWithFileName>..\Inc\debug.h</PathWithFileName>
       <FilenameWithoutPath>debug.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -328,7 +327,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Src\motor.h</PathWithFileName>
+      <PathWithFileName>..\Inc\motor.h</PathWithFileName>
       <FilenameWithoutPath>motor.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -352,7 +351,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Src\adc.h</PathWithFileName>
+      <PathWithFileName>..\Inc\adc.h</PathWithFileName>
       <FilenameWithoutPath>adc.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -376,7 +375,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Src\adc_process.h</PathWithFileName>
+      <PathWithFileName>..\Inc\adc_process.h</PathWithFileName>
       <FilenameWithoutPath>adc_process.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -400,7 +399,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Src\pwm_in.h</PathWithFileName>
+      <PathWithFileName>..\Inc\pwm_in.h</PathWithFileName>
       <FilenameWithoutPath>pwm_in.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -424,7 +423,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Src\servo.h</PathWithFileName>
+      <PathWithFileName>..\Inc\servo.h</PathWithFileName>
       <FilenameWithoutPath>servo.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -448,7 +447,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Src\encoder.h</PathWithFileName>
+      <PathWithFileName>..\Inc\encoder.h</PathWithFileName>
       <FilenameWithoutPath>encoder.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -472,7 +471,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Src\inertial.h</PathWithFileName>
+      <PathWithFileName>..\Inc\inertial.h</PathWithFileName>
       <FilenameWithoutPath>inertial.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -496,7 +495,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Src\TOF.h</PathWithFileName>
+      <PathWithFileName>..\Inc\TOF.h</PathWithFileName>
       <FilenameWithoutPath>TOF.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -520,7 +519,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Src\labirintus.h</PathWithFileName>
+      <PathWithFileName>..\Inc\labirintus.h</PathWithFileName>
       <FilenameWithoutPath>labirintus.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -544,7 +543,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Src\bno055.h</PathWithFileName>
+      <PathWithFileName>..\Inc\bno055.h</PathWithFileName>
       <FilenameWithoutPath>bno055.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
