@@ -1,6 +1,6 @@
 # SUMMARY
 
-The goal of the competition was to create an autonomous car, which can navigate in a labyrinth, change lanes, follow a safety car and then compete in a speed race. The detailed rule book is also in the project.
+The goal of the competition was to create an autonomous car, which can navigate in a labyrinth, change lanes, follow a safety car and then compete in a speed race. The detailed rule book is in the project root directory as "rules_hun.pdf".
 
 The website of the competition: http://robonaut.aut.bme.hu/
 
